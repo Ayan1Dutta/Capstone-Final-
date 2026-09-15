@@ -1,0 +1,61 @@
+DEFINE
+    -- 1. Base Counts & Volumes
+    MEASURE Txn[Attempted Transactions] = 
+        COUNTROWS(Txn)
+
+    MEASURE Txn[Successful Transactions] = 
+        CALCULATE(
+            COUNTROWS(Txn), 
+            Txn[status] = "success"
+        )
+
+    MEASURE Txn[KPI-Eligible Transactions] = 
+        SUM(Txn[is_profit_kpi_eligible])
+
+    MEASURE Txn[Volume (Attempted)] = 
+        [Attempted Transactions]
+
+    -- 2. Profitability & Growth Rates
+    MEASURE Txn[Contribution Profit per Txn] = 
+        DIVIDE(
+            SUM(Txn[contribution_profit_usd]),
+            [KPI-Eligible Transactions]
+        )
+
+    MEASURE Txn[Volume — Baseline (Jan)] = 
+        CALCULATE(
+            [Attempted Transactions], 
+            FORMAT(Txn[created_month], "yyyy-mm") = "2025-01"
+        )
+
+    MEASURE Txn[Volume Growth vs Jan %] = 
+        DIVIDE(
+            [Attempted Transactions] - [Volume — Baseline (Jan)], 
+            [Volume — Baseline (Jan)]
+        )
+
+    -- 3. Operational Rates
+    MEASURE Txn[Success Rate] = 
+        DIVIDE(
+            [Successful Transactions], 
+            [Attempted Transactions]
+        )
+
+    MEASURE Txn[Settlement Pending %] = 
+        DIVIDE(
+            SUM(Txn[flag_settlement_pending]),
+            CALCULATE(
+                COUNTROWS(Txn), 
+                Txn[status] = "success", 
+                Txn[amount] > 0
+            )
+        )
+
+EVALUATE
+SUMMARIZECOLUMNS(
+    "Total Attempted", [Attempted Transactions],
+    "Successful", [Successful Transactions],
+    "Success Rate", [Success Rate],
+    "Baseline Jan Volume", [Volume — Baseline (Jan)],
+    "Growth vs Jan %", [Volume Growth vs Jan %]
+)
