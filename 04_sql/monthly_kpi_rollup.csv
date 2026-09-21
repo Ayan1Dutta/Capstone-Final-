@@ -1,7 +1,0 @@
-created_month,attempted_transactions,successful_transactions,success_rate,profit_kpi_eligible_transactions,pct_settlement_pending,contribution_profit_per_successful_txn_usd,total_revenue_usd,total_processing_cost_usd,total_chargeback_cost_usd
-2025-01,1000,868,0.868,841,0.0255,0.2899,913.56,439.79,230.0
-2025-02,1172,1038,0.8857,992,0.0397,0.348,1116.67,551.5,220.0
-2025-03,1263,1097,0.8686,1047,0.0403,0.2712,1163.12,579.21,300.0
-2025-04,1338,1198,0.8954,1159,0.0277,0.0962,1112.96,631.42,370.0
-2025-05,1606,1411,0.8786,1362,0.032,0.1518,1402.88,786.07,410.0
-2025-06,1621,1428,0.8809,1372,0.0331,0.0422,1495.96,858.05,580.0
